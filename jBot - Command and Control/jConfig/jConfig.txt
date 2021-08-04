@@ -1,4 +1,0 @@
-# this is the default jBot configuration.
-
-encryption-key=jBotEncryptionKey
-bot-password=A4r0nAkht4r
