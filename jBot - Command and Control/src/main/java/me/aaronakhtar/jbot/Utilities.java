@@ -1,7 +1,12 @@
 package me.aaronakhtar.jbot;
 
+import me.aaronakhtar.jbot.objects.Bot;
+import me.aaronakhtar.jbot.objects.ConnectionType;
+import me.aaronakhtar.jbot.threads.handlers.BotHandler;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Utilities {
@@ -30,6 +35,22 @@ public class Utilities {
         System.out.println(Main.getPrefix() + s);
     }
 
+    public static void sendJoinMessage(ConnectionType type, Bot bot, Socket client){
+        switch (type){
+            case BOT:{
+
+                System.out.println(Colour.BRIGHT_RED.get() + "[Bot] " + Colour.RESET.get() +
+                        "{"+bot.getSocket().getInetAddress().getHostAddress()+" | "+bot.getOperatingSystem()+" | "+bot.getArchitecture()+" | "+bot.getTimezone()+"}");
+                return;
+            }
+
+            case CLIENT:{
+                System.out.println(Colour.YELLOW.get() + "[Client] " + Colour.RESET.get() + "Client Connection @" + client.getInetAddress().getHostAddress() + "...");
+                return;
+            }
+        }
+    }
+
     public static void handleException(Exception e){
 
         e.printStackTrace();
@@ -52,7 +73,8 @@ public class Utilities {
         MAGENTA("\u001b[35m"),
         CYAN("\u001b[36m"),
         WHITE("\u001b[37m"),
-        CLEAR("\033[H\033[2J");
+        CLEAR("\033[H\033[2J"),
+        NEW_LINE("\r\n");
 
         private String code;
         Colour(String code){

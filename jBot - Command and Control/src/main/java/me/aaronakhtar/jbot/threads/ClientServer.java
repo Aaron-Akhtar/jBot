@@ -2,6 +2,8 @@ package me.aaronakhtar.jbot.threads;
 
 import me.aaronakhtar.jbot.Main;
 import me.aaronakhtar.jbot.Utilities;
+import me.aaronakhtar.jbot.threads.handlers.BotHandler;
+import me.aaronakhtar.jbot.threads.handlers.ClientHandler;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,6 +24,8 @@ public class ClientServer extends Thread {
                 try{
                     final Socket client = server.accept();
 
+                    final Thread handlerThread = new Thread(new ClientHandler(client));
+                    handlerThread.start();
 
 
                     Thread.sleep(20);

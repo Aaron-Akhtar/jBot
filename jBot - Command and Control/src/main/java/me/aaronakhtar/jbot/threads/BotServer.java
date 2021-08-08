@@ -26,11 +26,6 @@ public class BotServer extends Thread {
                     final Thread handlerThread = new Thread(new BotHandler(bot));
                     handlerThread.start();
 
-
-
-
-
-
                     Thread.sleep(20);
                 }catch (Exception e){
                     Utilities.handleException(e);

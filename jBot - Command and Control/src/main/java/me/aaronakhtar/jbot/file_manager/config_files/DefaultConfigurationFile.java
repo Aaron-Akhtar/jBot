@@ -1,4 +1,4 @@
-package me.aaronakhtar.jbot.file_manager.files;
+package me.aaronakhtar.jbot.file_manager.config_files;
 
 import me.aaronakhtar.jbot.Main;
 import me.aaronakhtar.jbot.Utilities;

