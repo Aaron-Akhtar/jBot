@@ -44,6 +44,7 @@ public class ClientHandler implements Runnable {
             }
 
             writeToClient(Utilities.Colour.CLEAR.get() + Utilities.Colour.GREEN.get() + "Successfully Authenticated your Access-Key...", writer);
+            Main.connectedClients.add(socket);
             Utilities.sendJoinMessage(ConnectionType.CLIENT, null, socket);
             Thread.sleep(1900);
             writeToClient(Utilities.Colour.CLEAR.get(), writer);
@@ -58,7 +59,7 @@ public class ClientHandler implements Runnable {
                     for (Class<? extends JBotCommand> commandClass : Main.commands) {
                         final JBotCommand command = commandClass.newInstance();
                         if (command.getCommand().equalsIgnoreCase(args[0])) {
-                            //todo log command internally
+                            System.out.println(Utilities.Colour.YELLOW.get() + "[Client-Command] " + Utilities.Colour.RESET.get() + "[@"+accessKey+"] -> " + input);
                             if (command.isAdminCommand() && !Utilities.isKeyAdministrator(accessKey)) {
                                 writeToClient(Utilities.Colour.BLACK.get() + Utilities.Colour.RED_BG.get() + "This command is reserved for Administrators...\r\n", writer);
                                 break;
@@ -69,7 +70,7 @@ public class ClientHandler implements Runnable {
                         }
                     }
                 }catch (Exception e){
-                    Utilities.handleException(e);
+
                 }
 
             }
@@ -78,10 +79,11 @@ public class ClientHandler implements Runnable {
 
 
         }catch (Exception e){
-            Utilities.handleException(e);
+
         }finally {
             if (Main.connectedClients.contains(this.socket)){
                 Main.connectedClients.remove(this.socket);
+                System.out.println(Utilities.Colour.YELLOW.get() + "[Client] " + Utilities.Colour.RESET.get() + "Client Disconnected @" + socket.getInetAddress().getHostAddress() + "...");
             }
         }
 

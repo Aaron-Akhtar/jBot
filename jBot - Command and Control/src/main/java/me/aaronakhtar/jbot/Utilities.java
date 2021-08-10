@@ -17,7 +17,7 @@ public class Utilities {
         for (Bot bot : Main.connectedBots){
             try {
                 final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(bot.getSocket().getOutputStream()));
-                writer.write(Aes.encrypt(c, Main.encryptionKey));
+                writer.write(Aes.encrypt(c, Main.encryptionKey) + "\n");
                 writer.flush();
             }catch (Exception e){
                 //
@@ -54,7 +54,7 @@ public class Utilities {
             case BOT:{
 
                 System.out.println(Colour.BRIGHT_RED.get() + "[Bot] " + Colour.RESET.get() +
-                        "{"+bot.getSocket().getInetAddress().getHostAddress()+" | "+bot.getOperatingSystem()+" | "+bot.getArchitecture()+" | "+bot.getTimezone()+"}");
+                        "{ "+bot.getSocket().getInetAddress().getHostAddress()+" | "+bot.getOperatingSystem()+" | "+bot.getArchitecture()+" | "+bot.getTimezone()+" }");
                 return;
             }
 
@@ -70,8 +70,7 @@ public class Utilities {
     }
 
     public static void handleException(Exception e){
-
-        e.printStackTrace();
+        System.out.println(Colour.YELLOW.get() + "[ERROR] " + Colour.RED_BG.get() + e.getMessage() + Colour.RESET.get());
     }
 
     public enum Colour {
@@ -92,6 +91,7 @@ public class Utilities {
         GREEN_BG("\u001b[42m"),
         RED_BG("\u001b[41;1m"),
         WHITE_BG("\u001b[47;1m"),
+        MAGENTA_BG("\u001b[45;1m"),
         CYAN("\u001b[36m"),
         WHITE("\u001b[37m"),
         CLEAR("\033[H\033[2J"),

