@@ -38,7 +38,7 @@ public class AccessKeysFile implements ConfigFile {
                 file.createNewFile();
 
                 try(PrintWriter writer = new PrintWriter(new FileWriter(file), true)){
-                    writer.println("# The first key in this file will be the Administrator Key - Be sure to change it and rerun "+Main.name+"\n" +
+                    writer.println("# The first key in this file will be the Administrator Key - Be sure to change it and rerun "+Main.name+".\n" +
                                    "defaultKey123");
                 }
 

