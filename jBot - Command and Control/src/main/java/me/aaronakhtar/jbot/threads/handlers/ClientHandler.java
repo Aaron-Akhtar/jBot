@@ -19,6 +19,7 @@ public class ClientHandler implements Runnable {
         writer.flush();
     }
 
+    public String accessKey;
     private Socket socket;
 
     public ClientHandler(Socket socket) {
@@ -35,7 +36,7 @@ public class ClientHandler implements Runnable {
             Utilities.setTerminalName("*", writer);
             writeToClient(Utilities.Colour.GREEN.get() + "Access-Key: ", writer);
 
-            final String accessKey = reader.readLine();
+            accessKey = reader.readLine();
 
             if (!AccessKeysFile.getAccessKeys().contains(accessKey)){
                 writeToClient(Utilities.Colour.CLEAR.get() + Utilities.Colour.RED.get() + "Failed to Authenticate your Access-Key...", writer);
@@ -50,7 +51,7 @@ public class ClientHandler implements Runnable {
             writeToClient(Utilities.Colour.CLEAR.get(), writer);
             Utilities.setTerminalName(Main.name + " Network", writer);
 
-            while(Utilities.isSocketAlive(socket)){
+            while(Main.isRunning){
                 try {
                     writeToClient(Utilities.Colour.BLACK.get() + Utilities.Colour.GREEN_BG.get() + " @"+Main.name+" " + Utilities.Colour.RESET.get() + " ~# ", writer);
                     input = reader.readLine();

