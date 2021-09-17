@@ -1,0 +1,2 @@
+# The first key in this file will be the Administrator Key - Be sure to change it and rerun jBot.
+defaultKey123

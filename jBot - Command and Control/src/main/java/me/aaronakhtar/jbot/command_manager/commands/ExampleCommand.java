@@ -7,7 +7,7 @@ import me.aaronakhtar.jbot.threads.handlers.ClientHandler;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
-public class X implements JBotCommand {
+public class ExampleCommand implements JBotCommand {
 
     @Override
     public String getCommand() {

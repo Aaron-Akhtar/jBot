@@ -28,6 +28,7 @@ public class BotHandler implements Runnable {
         BufferedReader bufferedReader = null;
         String input;
         try{
+            socket.setSoTimeout(20000);
             bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
             if ((input = bufferedReader.readLine()) != null){
@@ -52,7 +53,7 @@ public class BotHandler implements Runnable {
             Utilities.handleException(e);
         }finally {
             try {
-                if (!isAuthenticated && Utilities.isSocketAlive(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())))) {
+                if (!isAuthenticated && Utilities.isSocketAlive(bufferedReader)) {
                     Utilities.closeSocket(this.socket);
                 }
             }catch (Exception e){
