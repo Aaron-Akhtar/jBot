@@ -28,7 +28,6 @@ public class BotHandler implements Runnable {
         BufferedReader bufferedReader = null;
         String input;
         try{
-            socket.setSoTimeout(20000);
             bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
             if ((input = bufferedReader.readLine()) != null){
