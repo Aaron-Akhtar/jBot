@@ -21,7 +21,7 @@ public class Utilities {
                 writer.write(Aes.encrypt(c, Main.encryptionKey) + "\n");
                 writer.flush();
             }catch (Exception e){
-                //
+                e.printStackTrace();
             }
         }
     }
@@ -47,7 +47,7 @@ public class Utilities {
     }
 
     public static void sendInternalMessage(String s){
-        System.out.println(Main.getPrefix() + s);
+        System.out.println(Main.getPrefix() + s + Colour.RESET.get());
     }
 
     public static void sendJoinMessage(ConnectionType type, Bot bot, Socket client){

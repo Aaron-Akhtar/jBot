@@ -1,32 +1,30 @@
-package me.aaronakhtar.jbot.threads;
+package me.aaronakhtar.jbot.threads.servers;
 
 import me.aaronakhtar.jbot.Main;
 import me.aaronakhtar.jbot.Utilities;
 import me.aaronakhtar.jbot.threads.handlers.BotHandler;
-import me.aaronakhtar.jbot.threads.handlers.ClientHandler;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ClientServer extends Thread {
+public class BotServerThread extends Thread {
 
     private int port;
 
-    public ClientServer(int port) {
+    public BotServerThread(int port) {
         this.port = port;
     }
 
     @Override
     public void run() {
         try(ServerSocket server = new ServerSocket(this.port)){
-            Utilities.sendInternalMessage("Started Client Server Successfully.");
+            Utilities.sendInternalMessage("Started Bot Server Successfully.");
             while(Main.isRunning){
                 try{
-                    final Socket client = server.accept();
+                    final Socket bot = server.accept();
 
-                    final Thread handlerThread = new Thread(new ClientHandler(client));
+                    final Thread handlerThread = new Thread(new BotHandler(bot));
                     handlerThread.start();
-
 
                     Thread.sleep(20);
                 }catch (Exception e){
