@@ -1,4 +1,4 @@
-package me.aaronakhtar.jbot.objects;
+package me.vecnathewhisperd.jbot.objects;
 
 import java.net.Socket;
 
